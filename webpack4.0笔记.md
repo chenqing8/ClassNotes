@@ -1,14 +1,14 @@
-#webpack项目：
+# webpack项目：
 1.提供了约定大于配置，默认约定了打包的入口是src->index.js,打包后输出dist->main.js
 2.4.x中新增了mode选项，决定是否压缩代码，这是必须选项
 3.webpack-dev-server实时打包好的mian.js是托管到了内存中，所以在项目目录中看不到，但是我们假装还是在项目根目录中是有的
 4.带s的都是数组，不带s的是对象
 
-#webpack安装
+# webpack安装
 1. 本地安装webpack，命令：npm install webpack webpack-cli -D
 2. webpack可以进行0配置
 
-##样式处理：
+## 样式处理：
 1.  **css-loader**：用来接续@import这种语法，把代码拼接成一个文件
         style-loader：用来把拼接好的代码文件插入在html文件中
 2.  **loader**的特点是希望单一
@@ -49,7 +49,7 @@
        minimizer: [new UglifyJsPlugin({}), new OptimizeCSSAssetsPlugin({})],
      }
 
-##js处理：
+## js处理：
 1.  **将es6装换为es5**：
      npm install babel-loader@8.0.0-beta.0 @babel/core @babel/preset-env webpack 
      {
@@ -101,7 +101,7 @@
           jquery: "$"
          },
 
-##图片处理：
+## 图片处理：
 1.  **打包图片** ：
     11. ***在js中创建图片来打包***，需要用到file-loader
         let image= new Image();
@@ -141,7 +141,7 @@
         }
 2.  有插件就在filename中直接添加
 
-##多页打包：
+## 多页打包：
 1.  module.exports = {
         entry: {<!--可以是多个入口文件-->
           'home': './src/pages/home/main.js',
@@ -169,7 +169,7 @@
         ]
    }
 
-##配置source-map
+## 配置source-map
 1. 当是生产模式的时候，如果项目出错，你想找问题的时候就只能看到压缩后的代码，解决办法就是进行源码映射
 2. **代码调试**
    module.exports = {
@@ -182,7 +182,7 @@
          devtool：'cheap-module-eval-source-map',<!--不会产生单独的文件，集成在打包的文件中 ，不可以显示列-->
    }
 
-##watch的用法
+## watch的用法
 1.**监控、自动打包部署** 
 module.exports = {
         entry: {         ...        },
@@ -200,7 +200,7 @@ module.exports = {
         devtool：'cheap-module-eval-source-map',<!--不会产生单独的文件，集成在打包的文件中 ，不可以显示列-->
    }
 
-##webpack小插件：
+## webpack小插件：
 1. **copy-webpack-plugin**，将from目录拷贝到to目录中
    new CopyWebpackPlugin([
       { from: '**/*', to: 'relative/path/to/dest/' },
@@ -210,7 +210,7 @@ module.exports = {
 3. **bannerPlugin**,版权声明插件，内置的
    new webpack.BannerPlugin('makeBychenqing');<!--会被添加在每个打包的js文件头部-->
 
-##webpack跨域
+## webpack跨域
 1. 代理：
    devServer:{
            proxy:{
@@ -231,7 +231,7 @@ module.exports = {
    }
 3. 有服务端了就不需要代理，webpack端口用服务端的端口
 
-##resolve解析查找第三方包：
+## resolve解析查找第三方包：
 1.  **别名、查找顺序**
     <!--main.js-->
     import 'bootstrp';<!-- 用于在js文件中引入一个库文件，他首先是去库的package.json的main的路径下找，你希望改变他的路径，有三种方式，1.别名2.写死3.mainfields改变库文件查找顺序 -->
@@ -259,7 +259,7 @@ module.exports = {
      
    }
 
-##定义环境变量：DefinePlugin、webpack-merge
+## 定义环境变量：DefinePlugin、webpack-merge
 1. 开发的时候和上线时候的环境是不一样的
 2. 
 <!-- main.js -->
@@ -275,7 +275,7 @@ module.exports = {
         }),
 3. 使用wenpack-merge来判断当前环境
 
-##webpack打包优化点：
+## webpack打包优化点：
 1. ***noParse***
    去解析指定库文件的依赖关系：
         <!-- main.js -->
