@@ -1,21 +1,22 @@
 # webpack项目：
-1.提供了约定大于配置，默认约定了打包的入口是src->index.js,打包后输出dist->main.js
-2.4.x中新增了mode选项，决定是否压缩代码，这是必须选项
-3.webpack-dev-server实时打包好的mian.js是托管到了内存中，所以在项目目录中看不到，但是我们假装还是在项目根目录中是有的
-4.带s的都是数组，不带s的是对象
+1.提供了约定大于配置，默认约定了打包的入口是`src->index.js`,打包后输出`dist->main.js`
+2.4.x中新增了`mode`选项，决定是否压缩代码，这是必须选项
+3.`webpack-dev-server`实时打包好的`mian.js`是托管到了内存中，所以在项目目录中看不到，但是我们假装还是在项目根目录中是有的
+4.带`s`的都是数组，不带`s`的是对象
 
 # webpack安装
-1. 本地安装webpack，命令：npm install webpack webpack-cli -D
+1. 本地安装webpack，命令：`npm install webpack webpack-cli -D`
 2. webpack可以进行0配置
 
 ## 样式处理：
-1.  **css-loader**：用来接续@import这种语法，把代码拼接成一个文件
-        style-loader：用来把拼接好的代码文件插入在html文件中
+1.  **css-loader**：用来接续`@import`这种语法，把代码拼接成一个文件
+    **style-loader**：用来把拼接好的代码文件插入在html文件中
 2.  **loader**的特点是希望单一
         loader的用法：字符串表示只用一个loader；数组表示可以用多个loader
-        loader的顺序，默认是从右向左执行；从下到上执行，例如['style-loader','css-loader']表示先把css代码拼接后在插入到html中
-        loader还可以写成一个对象的形式['style-loader',{loader:'css-loader'}],重要的是可以传参数['style-loader',{loader:'css-loader'，options：{}}]
-3.  **修改优先级**默认不给参数的情况下，css代码是插入在html的head标签底部的，这样自己的样式优先级就没有那么高了，，，解决       办法:
+        loader的顺序，默认是从右向左执行；从下到上执行，例如`['style-loader','css-loader']`表示先把css代码拼接后在插入到html中
+        loader还可以写成一个对象的形式`['style-loader',{loader:'css-loader'}]`,重要的是可以传参数`['style-loader',{loader:'css-loader'，options：{}}]`
+3.  **修改优先级**默认不给参数的情况下，css代码是插入在html的head标签底部的，这样自己的样式优先级就没有那么高了，，，解决办法:
+       ```javascript
         [{
             loader:'style-loader',
             options：{
@@ -23,7 +24,9 @@
             }
         }，
         'css-loader']
+       ```
 4.  **使用less文件的话**：
+       ```javascript
         [{
             loader:'style-loader',
             options：{
@@ -32,26 +35,40 @@
         }，
         'css-loader',
         'less-loader']
-5.  **抽离css样式的插件**：mini-css-extract-plugin
+        ```
+5.  **抽离css样式的插件**：`mini-css-extract-plugin`
     使用：new 插件，然后替换
-    [
+       ```javascript
+        [
         MiniCssExtractPlugin.loader，
         'css-loader',
         'less-loader']
-6.  **自动添加前缀**：使用postcss-loader、autoprefixer,例如：[
+        ```
+6.  **自动添加前缀**：使用`postcss-loader、autoprefixer`,例如：
+       ```javascript
+        [
         MiniCssExtractPlugin.loader，
         'css-loader',
         'postcss-loader',
-        'less-loader'];
-       然后需要新建一个postcss.config.js文件，内容如下：module.exports={plugins:[require('autoprefixer')]}
-7.  **css压缩**在有mini-css-extract-plugin的前提下，还需要添加optimize-css-assets-webpack-plugin和js压缩插件；例如：
+        'less-loader'
+        ]
+      ```
+       然后需要新建一个`postcss.config.js`文件，内容如下：
+       ```javascript
+       module.exports={plugins:[require('autoprefixer')]}
+       ```
+7.  **css压缩**在有`mini-css-extract-plugin`的前提下，还需要添加`optimize-css-assets-webpack-plugin`和js压缩插件；例如：
+       ```javascript
      optimization: {
        minimizer: [new UglifyJsPlugin({}), new OptimizeCSSAssetsPlugin({})],
      }
-
+     ```
 ## js处理：
 1.  **将es6装换为es5**：
+     ```
      npm install babel-loader@8.0.0-beta.0 @babel/core @babel/preset-env webpack 
+     ```
+     ```javascript
      {
       test: /\.js$/,
       use: {
@@ -63,7 +80,7 @@
         }
       }
     }    
-    
+    ```
 
 2.  **处理js语法以及校验**：
     {
