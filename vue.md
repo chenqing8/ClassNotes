@@ -81,8 +81,8 @@
 5. **vuex**
   系统学习后
   可以看看vue微信读书3.4-4.2.mp4（有点绕，没大懂）
-
   import store from './store/index'必须小写
+  vuex是由
 
 6. **ngnix**
     在官网上面下载安装包，在包目录下进入cmd，运行start nginx.exe会有东西闪退
@@ -115,17 +115,116 @@
     /* 新建一个mixin文件 */
     import {mapGetters} from 'vuex'
     export const ebookMixin={
-         computed: {
+        computed: {
             ...mapGetters(['filename','filename1'])
-        }
+        },
+        methods: {
+            ...mapActions(["setShowMenu","setFileName"])
+        },
     }
     /* 在需要使用vuex中的地方 */
     import {ebookMixin} from 'mixin文件路径'
     export default {
         mixins:[ebookMixin],
         mounted(){
-
+            this.setShowMenu('新的值')/* 如果不考虑先后顺序就，直接这样就可以了 */
+            this.setFileName('新的值').then(()=>{/* 当需要在跟新vuex后调用最新值，这种是为了确保执行顺序，确保值是最新的 */
+                console.log(this.filename)
+            })
         }
     }
    ```
 
+9. **vue国际化**
+    ```js
+    /* 新建一个配置国际化的页面 */
+    import Vue from "vue"
+    import VueI18N from "vue-i18n"
+    import cn from "../lang/cn"
+    import en from "../lang/en"
+    Vue.use(VueI18N)
+    const messages = {
+    cn,
+    en
+    }
+    const i18n = new VueI18N({
+    locale: 'en', // 语言标识
+    //this.$i18n.locale // 通过切换locale的值来实现语言切换
+    messages
+    })
+    export default i18n;
+    ```
+    ```js
+    /* main.js中引入国际化的页面 */
+    import Vue from 'vue'
+    import App from './App.vue'
+    import i18n from './lang'
+    new Vue({
+    i18n,
+    render: h => h(App)
+    }).$mount('#app')
+
+    ```
+    ```html
+    <!-- 在vue页面中直接开始使用就行了，格式如下 -->
+    <span class="choose">{{$t('book.selectFont')}}</span>
+    ```
+
+10. **环境变量的配置**
+    在项目根目录下创建一个`.env.development`的文件
+    ```js
+    <!-- .env.development页面 -->
+    VUE_APP_RES_URL=http://192.168.50.11:81
+    ```
+    ```js
+    <!-- 在需要引用全局变量的地方使用，使用格式如下： -->
+    `${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`
+    ```
+
+
+
+
+
+
+11. **切换主题**
+    首先准备一个主题文件(就是样式颜色的文件)
+    ```js
+    /* 追加样式表的方法 */
+    export function addClass(href){
+        let link=document.createElement('link')
+        link.setAttribute('rel','stylesheet')
+        link.setAttribute('type','text/css')
+        link.setAttribute('href',href)
+        document.getElementByTagName('head')[0].appendChild(link)
+    }
+    /* 删除之前追加的样式表的方法 */
+    export function removeClass(href){
+        let links=document.getElementByTagName('link')/* 获取文档的所有link标签 */
+        for(const i=links.length;i>=0;i--){/* 遍历link标签 */
+            const link=links[i];
+            if(link && link.getAttribute('href') && link.getAttribute('href')===href){/* 找到与参数一致的路径 */
+                link.parentNode.removeChild(link)/* 然后删除它 */
+            }
+        }
+    }
+    /* 执行要删除的路径，写在这里方便管理 */
+    export function removeAllClass(){
+        removeClass('css路径1')
+        removeClass('css路径2')
+        removeClass('css路径3')
+        removeClass('css路径4')
+        removeClass('css路径5')
+    }
+
+    /* 切换主题 */
+    changeThemes(id){
+        removeAllClass();/* 在追加样式之前清空所有相关的样式表 */
+        case 0:
+            addClass('css路径1')
+            break;
+        case 1:
+            addClass('css路径2')
+            break;
+        ···
+    }
+    ```
