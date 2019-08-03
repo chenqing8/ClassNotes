@@ -369,6 +369,8 @@
     ```
 22. **生命周期**
      生命周期：每个组件从创建到运行到销毁，这一个过程，在这个过程中触发的函数就是生命周期函数
+     组件创建阶段(1)、运行阶段(>1)、销毁阶段(1)
+
 23. **redux react-redux**
     >npm install redux react-redux
 
@@ -542,6 +544,8 @@
                 <Route path="/" exact render={()=><div>header</div>}></Route>
                 <Route path="/detial" exact render={()=><div>detial</div>}></Route>
                 <Route path="/detial" exact component={Home}></Route>
+                <Route path="/detial/:id" exact component={Home}></Route>//表示传参匹配/detial/1,用this.props.match.params.id来获取 
+                 <Route path="/detial" exact component={Home}></Route>//可以表示传参匹配/detial?id=1,用this.props.location.search来获取
               </div>
             </BrowserHistory>
           </div>
@@ -549,6 +553,12 @@
       }
     }
     ```
+    `使用路由`
+    <div to="/detial"></div>
+    a标签要使用<link to="/detial"></link>
+    `路由跳转`
+    import {Redirect} from 'react-router-dom'
+    <Redirect to="/"/>
 25. **动画 react-transition-group**
     ```javascript
       npm install react-transition-group
@@ -669,6 +679,25 @@
       <item onCLick={()=>this.changeItem()}></item>
     }
     ```
+29. **异步组件加载**
+    ```js
+      /* load.js */
+      import Loadable from 'react-loadable'
+      import React from 'react'
+      export const Load=Loadable({
+        loader:()=>{import ('./')},/* 加载完成 */
+        loading(){/* 正在加载 */
+          return <div>正在加载。。。</div>
+        }
+      })
+      /* APP.JS */
+      import detial from "../detial/loade.js"
+      /* detial.js */
+      IMPORT {withRouter} from 'react-router-dom'//当你detail压面需要获取路由里面的参数或者内容的时候，就要用这个来连接
+      export default connet (mapstate,mapdis)(withRouter(Detial))
+    ```
+30. **项目上线流程**
+
 #遇到的问题
 1. 引入组件必须是大写字母开头
    ```javascript
@@ -729,3 +758,5 @@
    可以同时使用`export default` 和`export` 向外暴露成员
    使用`export`向外暴露的成员，只能使用`{ 名字与导出一致 }`的形式来接收，这种形式，叫做【按需导出】
    `export default`可以其他名字来接收
+6. 字符串里面的标签转化为html
+    <div dangerouslySetInnerHTML={{__html:this.props.content}}></div>
