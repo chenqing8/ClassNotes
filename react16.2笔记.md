@@ -1,4 +1,11 @@
- # 在项目中使用框架
+<!--
+ * @Description: In User Settings Edit
+ * @Author: your name
+ * @Date: 2019-07-06 18:22:59
+ * @LastEditTime: 2019-09-18 08:39:44
+ * @LastEditors: Please set LastEditors
+ -->
+# 在项目中使用框架
 1. **运行**：
 
    ```
@@ -108,7 +115,8 @@
      ```
     >`方案三：用class关键字，继承自React.Component`
      ```
-     `当你使用import React,{compontent} form 'react';component等同于React.Component`
+     `可以将Compontent替换为PureCompontent,可以很好的提升性能，但是建议用immutable管理数据，不然的花会遇到很多很坑`
+     `当你使用import React,{Compontent} form 'react';Component等同于React.Component`
      class Hello extends React.Component {
        constructor(){
          super();
@@ -180,7 +188,7 @@
        /*构造器的作用就是每当你new的时候，必然会优先执行构造器中的代码  */
        constructor(name，age){
          this.name=name;
-         this.age=age; 
+         this.age=age;
        }，
        static info='111';
      }
@@ -368,9 +376,9 @@
     }
     ```
 22. **生命周期**
-     生命周期：每个组件从创建到运行到销毁，这一个过程，在这个过程中触发的函数就是生命周期函数
+     生命周期：每个组件从创建到运行到销毁，这一个过程，在这个过程中触发的函数就是生命周期函
      组件创建阶段(1)、运行阶段(>1)、销毁阶段(1)
-
+     在组件销毁前，要在componentWillUnmount的函数中销毁window定义的事件，例如滚动事件
 23. **redux react-redux**
     >npm install redux react-redux
 
@@ -526,21 +534,22 @@
     >`redux-immutable`统一数据格式
 
     npm install redux-immutable
-
 24. **react路由**
     npm install react-router-dom
 
     ```js
     /*APP.js*/
-    import {BrowserHistory,Route} from "react-router-dom"
+    import {BrowserHistory,Route,Link} from "react-router-dom"
     calss APP extends React.Component{
       render(){
         return (
           /* 这里面只能有一个子元素 */
           <div>
-            <Header/>
             <BrowserHistory>
               <div>/*  BrowserHistory 里面只能有一个子节点 component：表示使用组件*/
+                <Link to="">/* 想要点击头部实现路由单页跳转，并且link只能放在路由里面 */
+                  <Header/>
+                </Link>
                 <Route path="/" exact render={()=><div>header</div>}></Route>
                 <Route path="/detial" exact render={()=><div>detial</div>}></Route>
                 <Route path="/detial" exact component={Home}></Route>
@@ -698,8 +707,8 @@
     ```
 30. **项目上线流程**
 
-#遇到的问题
-1. 引入组件必须是大写字母开头
+# 遇到的问题
+.1. 引入组件必须是大写字母开头
    ```javascript
     import Header from './header/header'
    ```
