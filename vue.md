@@ -75,6 +75,21 @@
         .px2rem(@px){
             font-size: unit(@px/@radio,px);/* unit()没有第二个参数就是就是去单位 ，带有第二个参数表示加单位*/
         }
+        /* 现在有了一个更方便的东西就是px2rem-loader,直接在vue.config.js中配置后，app.vue中设置了html的fontsize后就可以了 */
+        /* vue.config.js */
+        module.exports = {
+            chainWebpack: config => {
+                config.module
+                .rule('scss')
+                .oneOf('vue')
+                .use('px2rem-loader')
+                .loader('px2rem-loader')
+                .before('postcss-loader') // this makes it work.
+                .options({ remUnit: 37.5})/* remUnit是你拿到的设计稿的宽度/10 */
+                .end()
+            }
+        }
+        /* 然后直接正常开发就可以直接编译为rem了 */
     ```
 
 
@@ -181,11 +196,6 @@
     `${process.env.VUE_APP_RES_URL}/fonts/daysOne.css`
     ```
 
-
-
-
-
-
 11. **切换主题**
     首先准备一个主题文件(就是样式颜色的文件)
     ```js
@@ -229,6 +239,7 @@
     }
     ```
 
+<<<<<<< HEAD
 12. **修饰符**
     >当添加`.lazy`之前,input框绑定的`msg`是双向绑定的;当加了之后就不在实时的双向绑定，需要等到输入框失去焦点后或者按了回车键后才会更新视图绑定的数据
     <input v-model.lazy="msg" >
@@ -330,4 +341,28 @@
          }, 
          //当前父组件下面的任一子组件
          inject: ['for'],
+=======
+12. **真机联调**
+    1. 通过ip地址在手机上面访问：在packge.json 的dev后面添加一个`--host 0.0.0.0`
+    2. 在低版本手机上面测试可能出现白屏：
+       >  `npm install babel-polyfill`,
+            然后在main.js中`import "babel-polyfill"`
+    3. 上滑组件的时候顶部出现白版： 在该组件中的`touchstart`加一个事件`touchstart.prevent`就可以了
+    4. 项目部署：打包后把dist里面的目录放在后台的服务器根目录上面就可以了，如果想要更改目录，就得在`config/index.js`的          `assetsPublicPath:'/新目录'`
+
+13. **动态组件引入**
+    ```html
+    <component :is="currenTab===1?EbookNavContent:EbookNavBook"></component>
+    ```
+    ```js
+    import EbookNavContent from "../ebook/ebookNavContent";
+    import EbookNavBook from "../ebook/ebookNavBook";
+    data() {
+        return {
+        currenTab:1,
+        EbookNavBook:EbookNavBook,
+        EbookNavContent:EbookNavContent
+        };
+    },
+>>>>>>> a90c8163dcb709798289cad873e9c9e31b8902ee
     ```
