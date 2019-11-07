@@ -288,6 +288,59 @@ http.createServer((req,res)=>{
 >
 > 对于异步操作，要通过判断错误号(err.code)来进行出错处理
 
+19.**setHeader和writeHead区别**
+
+```js
+1.使用setHeader设置请求报文头
+res.statusCode = 200;
+res.statusMessage = 'OK';
+res.setHeader('Content-Type','text/plain; chartset=utf8');
+
+2.使用writeHead设置请求报文头
+res.writeHead(404,'Not Font',{
+    'Content-Type':'text/plain;chartset=utf8'
+});
+
+`区别：`
+1.在系统没有写writeHead的时候，系统会默认使用setHeader,如果用户有手动进行设置请求报文头，系统就会优先使用用户手动设置的。
+```
+
+
+
+20.**npm**
+
+1.npm官网
+
+2.npm包管理器：代码仓库
+
+3.npm客户端：npm publish reusable-code(在dos命令中输入然后就把你的代码发布到了npm 中，然后别人就可以直接npm install使用了)
+
+
+
+> npm 就是基于nodejs开发的一个命令行工具而已
+>
+> 常用命令：
+>
+> install ，安装包
+>
+> uninstall，卸载包
+>
+> version，查看当前npm版本
+>
+> init,创建一个packge.json文件。
+>
+> 注意使用`npm init -y`的时候，如果当前文件夹的名字比较怪就会影响一步到位的操作，此时就需要用`npm init`来做向导
+
+21.**modules(模块) 和packages(包)的区别**
+
+1.npm仓库里面的所有代码都是包，但是不是所有代码都是模块
+
+2.只有在nodejs中可以使用`require()`来加载的，我们称之为模块
+
+3.在package.json中有描述的就是包
+
+4.不是所有模块都是一个包，因为在本地新建一个js文件也可以通过require来引入
+
 
 
 
