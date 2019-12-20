@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## vue-property-decorator的用法
 这个组件完全依赖于vue-class-component.它具备以下几个属性:
 
@@ -136,7 +135,6 @@ export default class myComponent extends Vue{
 }
 ```
 总结: 两种方式不同的是在定义mixins时如果没有定义vue/type/vue模块, 那么在混入的时候就要继承该mixins; 如果定义vue/type/vue模块,在混入时可以在@Component中mixins直接混入
-=======
 # ts
 1. **参数类型**
  ``` js
@@ -357,4 +355,3 @@ class Sheep implements Animal{/* Sheep使用接口的时候必须实现接口中
 
 
 
->>>>>>> a90c8163dcb709798289cad873e9c9e31b8902ee
