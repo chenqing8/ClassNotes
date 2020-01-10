@@ -5,13 +5,14 @@
 + 核心：描述该语言该的语法和基本对象
 + 文档对象模型（Dom）：描述与网页内容进行交互的对象和接口
 + 浏览器对象模型（Bom）：描述与浏览器交互的对象和接口
+
 ####  事件循环
 
 > ##### **科普**
 >
 > 1. v8引擎里面没有ajax、console、settimeout……，他里面只有两个东西
 >
->       + 堆
+>    + 堆
 >
 > + 调用栈
 >
@@ -38,7 +39,9 @@
 1. Array.from(new Set([...arr1,...arr2]))
 
 **判断数组中是否包含另一个数组中的元素**
+
 1. find
+
 ```js
 var arr=[1,2,3,2,1];
 var target=[3,2,1,4,6];
@@ -49,7 +52,9 @@ target.find(value=>{
    return arr.indexOf(value)>-1//返回找到的第一个元素值
 })
 ```
+
 2. findIndex
+
 ```js
 var arr=[1,2,3,2,1];
 var target=[3,2,1,4,6];
@@ -59,6 +64,7 @@ target.findIndex(value=>{
 ```
 
 **找到两个数组共同的部分**
+
 ```js
 let [res,arr,target]=[[],[1,2,3],[2,3.4]];
 target.find(value=>{
@@ -67,6 +73,7 @@ target.find(value=>{
     }
 })
 ```
+
 ```js
 getIntersection = (arr1, arr2) => {
   let len = Math.min(arr1.length, arr2.length)
@@ -81,6 +88,7 @@ getIntersection = (arr1, arr2) => {
 ```
 
 #### 时间
+
 ```js
 //1.都是用于计算时间戳
 new Date('04 Dec 1995 00:12:00 GMT').getTime()===Date.parse('04 Dec 1995 00:12:00 GMT')===Date.parse('1995-12-04')
@@ -123,6 +131,7 @@ getRelativeTime = timeStamp => {
 ```
 
 #### 函数处理
+
 ```js
 /**
  * @description 绑定事件 on(element, event, handler)
@@ -143,12 +152,16 @@ export const on = (function () {
   }
 })()
 ```
+
 `navigator.language获取浏览器系统语言`
+
 + 文档对象模型（DOm）：描述与网页内容进行交互的对象和接口
 + 浏览器对象模型（Bom）：描述与浏览器交互的对象和接口
 
 #闭包练习题
+
 1. 没有形参
+
 ```js
 /* 首先有变量提升var n;var c;还有函数申明a,然后代码从上到下依次执行 */
 var n=0;/* 1 */
@@ -168,7 +181,9 @@ c();/* 4    相当于执行b的函数体，继续b执行的刚刚的操作 */
 console.log(n)
 //结果：11,12,0
 ```
+
 2. 形参
+
 ```js
 // 全局作用域有变量提升var a;var b;var c;函数申明test->AAAFFF111
 var a=10,b=11,c=12;/* 1 */
@@ -183,7 +198,9 @@ console.log(a)/* 10 */
 console.log(b)/* 11 */
 console.log(c)/* 3 */
 ```
+
 3. 条件判断
+
 ```js
 // 不管条件是否成立都要先进行变量提升
 // 全局作用域变量提升：var a;
@@ -194,6 +211,7 @@ console.log(a)/* undefined */
 ```
 
 4. arguments、没有返回值
+
 ```js
 // 全局作用域变量提升：var a;函数申明b->AAAFFF111;
 var a=4;
@@ -227,6 +245,7 @@ console.log(a);/* undefined */
 ```
 
 5. 运算符、立即执行函数
+
 ```js
 // 全局作用域：var foo；立即执行函数不能当成函数申明
 var foo='hello';/* 1 */
@@ -255,6 +274,7 @@ var foo='hello';/* 1 */
 ```
 
 6. 闭包作用域
+
 ```js
 // 全局作用域 var a;var f;fn->AAAFFF111
 var a=9;/* 1 a=0 a=1*/
@@ -272,7 +292,9 @@ console.log(fn()(5));/*5 先AAAFFF111再 BBBFFF111*/
 console.log(f(5));/*6 此时var a=1;然后执行BBBFFF111 */
 console.log(a);/* 2 */
 ```
+
 #数据类型练习
+
 ```js
 // 私有变量和全局变量都是引用值得时候，而且指向的是相同的内存，所以两者是相互关联的
 // 全局变量var ary;var res;fn->AAAFFF111
@@ -289,6 +311,7 @@ var res=fn(ary);/* [100] */
 console.log(ary);/* [1,2,3,4] */
 console.log(res); /*  [100]  */
 ```
+
 ```js
 // 全局作用域，var f;fn->AAAFFF111
 function fn(i){
@@ -304,6 +327,7 @@ fn(20)(40);/* 执行AAAFFF111  */
 fn(30)(50);
 f(30)
 ```
+
 ```js
 // 全局变量：var num；var obj；var fn；
 var num=10;
@@ -325,6 +349,7 @@ fn(5);
 obj.fn(10)
 console.log(num,obj.num)/* 65,30 */
 ```
+
 ```js
 function Fn(){
     this.x=100;
@@ -360,6 +385,432 @@ f2.getY();
 Fn.prototype.getY();
 
 ```
+
+
+
+#### 构造器和原型
+
+
+
+每个js规定都有一个prototype属性，指向另一个对象。注意，这个prototype就是一个对象，这个对象的属性和方法都会被构造函数所拥有。
+
+`我们可以把这些不变的方法，直接定义在prototype对象上。这样所有对象的实例就可以共享这些方法`
+
+原型是一个对象
+
+原型的作用就是共享方法
+
+一般公共属性可以定义在构造函数里面，但是方法不能放在构造函数里面，，这样会使用多个不必要的内存空间，建议方法放在原型上面 
+
+对象自身上系统自己添加一个__ptoto_ _ 指向我们构造函数的原型对象上面
+
+查找顺序：首先在自身上面去查找，自身没有，但是如果有—proto—，那么就去prototype上面去查找
+
+constructor就是指向的构造函数本身
+
+```js
+//在原型上面添加新的方法：
+Star.prototype.sing=function(){}
+
+//修改原来的原型对象：赋值操作，导致原型上面没有了constructor的对象，所以我们需要手动指定constructor的对象，不然找不到。
+Star.prototype={
+  constructor:Star，
+  sing(){}
+}
+```
+
+![image-20200106163817798](D:\project\ClassNotes\images\js\1578299501.png)
+
+![image-20200106163817798](D:\project\ClassNotes\images\js\1578300440.png)
+
+#### es5补充的东西
+
+对象方法：
+
++ Object.defineProperty(obj,pro,desc)定义对象中新属性或者修改原有的属性
+
+  ```js
+  //以前设置或者添加属性的方法
+  let obj ={
+      name:'cq'
+  }
+  obj.age=23;
+  obj.name:'ng'
+  //现在设置属性的方法
+  Object.defineProperty(obj,'age',{
+      value:23
+  })
+  Object.defineProperty(obj,'name',{
+      value:'ng'
+  })
+  Object.defineProperty(obj,'id',{
+      writable:false//这个属性不允许重写
+      enumerable：false//如果设置为false，则不允许这个对象的该属性遍历出来，意思是keys获取不到该属性
+      configurable:false//false，表示不允许删除该属性，也不允许修改该特性，默认为false
+  })
+  ```
+
+  
+
+#### 函数进阶
+
++ 定义函数
+
+```js
+//1.自定义（命名）
+fn(){}
+//2.函数表达式（匿名）
+var fn = function (){}
+//3.通过Function，由此可以看出，所有函数都是一个对象，他是Function的实例，所以他的隐士原型指向的Function的原型对象
+var fn =new Function('参数1','参数2'，...,'函数体')
+var fn = new Function ('console.log(23)')
+var fn = new Function ('a','b','c','console.log(23)')
+```
+
+![1578463437](D:\project\ClassNotes\images\js\1578463437.png)
+
++ 调用函数
+
+  ```js
+  //1.普通函数
+  function fn(){}
+  fn()\fn.call()
+  //2.对象的方法
+  var o={
+      say:function(){}
+  }
+  o.say();
+  //3.构造函数
+  function fn (){}
+  new fn()
+  //4.绑定事件函数
+  btn.onclick=function(){}
+  事件触发调用
+  //5.定时器函数
+  setInterval(function(){})
+  计时调用
+  //6.立即执行函数
+  (function(){})()
+  自动调用
+  ```
+
++ this指向
+
+```js
+//1.普通函数
+//this指向window
+function fn(){}
+fn()\fn.call()
+//2.对象的方法
+//this指向对象o
+var o={
+    say:function(){}
+}
+o.say();
+//3.构造函数
+// 构造函数和构造函数的原型对象this指向当前实例
+function fn (){}
+new fn()
+//4.绑定事件函数
+//this指向函数调用者，也就是btn
+btn.onclick=function(){}
+事件触发调用
+//5.定时器函数
+//this指向window
+setInterval(function(){})
+计时调用
+//6.立即执行函数
+//this指向window
+(function(){})()
+自动调用
+```
+
+![1578464404(1)](D:\project\ClassNotes\images\js\1578464404(1).png)
+
++ 改变函数的this指向
+
+```js
+//1.call(目标对象，参数1，参数2)
+var 0={
+    name:'123'
+}
+function fn(){}
+fn.call(0)
+    // call主要用于继承
+	function F(name){
+        this.name = name;
+    }
+	function S(name){
+        F.call(S,name) 
+    }
+
+
+
+//2.apply(目标对象，[参数1，参数2])
+fn.apply(0)
+   // apply主要辅助于使用数学内置对象
+    var arr =[1,3,99,66,3]//注意：如果数组里面是数值型的，那么apply获取的arr就是数组，字符串类型的，那么apply就是一个个字符串
+    var max = Math.max.apply(null,arr);
+    //由此得出这个数组中的最大值
+
+
+
+//3.bind(目标对象，参数1，参数2)
+//不会自动执行，，而是返回一个原函数改变this后的拷贝，所以需要用东西来接收
+
+//如果遇到需要多个this指向，然后就可以通过后面参数的形式来实现
+btn.onclick = function (){
+    this.dsiable =true;//这个this指向的是btn
+    setTimeOut(function(){
+        this.disable =false;//这个this在定时器内部原本指向的window，但是后面被改变了this的指向
+    }.bind(this),3000)//这个this是在定时器的外面，但是在定时器的里面所以指向的是btn
+}
+
+
+```
+
++ 严格模式
+
+什么是严格模式？
+
+![1578559913(1)](D:\project\ClassNotes\images\js\1578559913(1).png)
+
+在js里面第一行加上’use strict‘,这样下面的js代码就会按照严格模式执行
+
+也可以单独给函数设置严格模式
+
+> `规范`
+>
+> 1. 变量需要先声明后使用
+> 2. 严禁删除已经声明过的变量，比如使用delete x;
+> 3. 全局作用域中函数中的this指向undefined
+> 4. 构造函数不加new来调用，里面的this就会报错
+> 5. 实例化的this还是指向实例；定时器this还是指向window；事件还是指向调用者
+> 6.  函数里面不允许有重名的变量
+> 7. 不允许在非函数代码块内申明函数，比如if、for里面
+>
+> 
+
+
+
++ 高阶函数
+
+接收函数作为参数或将函数作为返回值输出
+
+```JS
+function fn (a,b,callback){
+    consloe.log(a+b);
+    callback && callback();
+}
+fn(1,2,function (){
+    console.log('end')
+})
+```
+
+
+
++ 闭包
+
+> `拓展：`
+>
+> 变量根据作用域的不同分为两种：全局和局部
+>
+> 1. 函数内部可以使用全局变量
+>
+> 2. 函数外部不能使用局部变量
+> 3. 当函数执行完毕，本作用域内的局部变量会销毁
+
+> `闭包`：
+>
+> 指有权访问另一个函数作用域中的变量的函数
+>
+> 就是一个作用域可以访问另一个函数内部的局部变量
+
+> `闭包的作用：`
+>
+> 延伸了变量的作用域范围
+
+```js
+/*1. 我们利用动态添加属性的方式*/
+for(var i = 0; i<lis.length; i++){
+    lis[i].index = i;
+    lis[i].onclick = function(){
+        console.log(this.index);
+    }
+}
+
+/*2. 利用闭包的方式*/
+for(var i = 0; i<lis.length; i++){
+    // 利用for循环创建了4个立即执行函数
+    (function(i){
+         lis[i].onclick = function(){
+        console.log(this.index);
+    }
+    })(i)
+}
+```
+
+```js
+//1. 没有闭包产生示例
+var name = 'this window';
+var obj = {
+    name:'my obj',
+    getFn:function(){
+        return function(){
+            return this.name;
+        }
+    }
+}
+obj.getFn()();
+//------------解析-------------------
+1. 首先看obj.getFn()
+var f = obj.getFn();
+类似于
+var f= function(){
+    return this.name;
+}
+2. 第二个（）表示
+f（）
+类似于
+function(){
+    return this.name;
+}()
+看着就像立即执行函数，所以里面的this指向的是window
+
+//2.有闭包的示例分析
+var name = 'this window';
+var obj = {
+    name:'my obj',
+    getFn:function(){
+        var that = this;
+        return function(){
+            return that.name;
+        }
+    }
+}
+obj.getFn()();
+//------------解析-------------------
+1. 首先看obj.getFn()
+首先会执行var that = this;当前this指向的是谁调用它就指向谁，所以是obj
+然后就是
+var f = obj.getFn();
+类似于
+var f= function(){
+    return that.name;
+}
+这个that是函数外的局部变量，所以是指向的是obj,所以获取obj.name
+2. 第二个（）表示
+f（）
+类似于
+function(){
+    return that.name;
+}()
+看着就像立即执行函数，里面that指向的是obj，所以是my obj
+```
+
+```js
+//3.闭包应用
+function fn(msg,time){
+    setTimeOut(function(){
+        alert(msg)//这里使用了外部函数的变量msg,所以构成了闭包
+    },time)
+}
+fn('msg',2000);
+
+```
+
+
+
+
+
++ 递归
+
+如果一个函数在内部可以调用其本身，那么这个函数就是递归函数
+
+递归函数的作用和循环的作用相似
+
+> 使用递归的时候为了防止栈溢出，一定要加一个特殊条件return退出
+
+```js
+var data=[{
+    id:'1',
+    goods:[{
+        id:'11'
+    }]
+}]
+//我们想要做输入ID号，就可以返回的数据对象
+//利用foreach去遍历每一个对象
+function fn(json,id) {
+    var 0 = null;
+    json.foreach(function (item){
+        if(item.id === id){
+            o = item;
+        }else if(item.goods &&  item.goods.length>0){
+            o = fn(item.goods, id)
+        }
+    })
+    return o;
+}
+
+
+fn(data, 11);
+```
+
+
+
+
+
++ 深拷贝、浅拷贝
+
+> 浅拷贝只是拷贝一层，更深层次对象级别的只拷贝引用
+>
+> 深拷贝拷贝多层，每一级别的数据都会拷贝
+
+```js
+var obj={
+    name:'123',
+    ma:{
+        id:23
+    }
+}
+
+var o={};
+//浅拷贝1
+for(var key in obj){
+    o[key] = obj[key]
+}
+//浅拷贝2
+Object.assign(o, obj)
+```
+
+```js
+//深拷贝
+function deepcopy(newobj, oldobj){
+    for(var k in oldobj){
+        //判断我们属性值属于那种类型
+        var item = oldobj[k];
+        if(item instanceof Array){
+            //是数组类型就先创建一个空数组
+            newobj[k] = [];
+            deepcopy(newobj[k], item)
+        }else if(item instanceof Object){
+            //是对象类型就先创建一个空对象
+            newobj[k] = {};
+            deepclone(newobj[k], item)
+        }else{
+            //简易类型，就直接赋值
+            newobj[k] = item;
+        }
+    }
+}
+```
+
+
+
+
+
+
+
 
 
 

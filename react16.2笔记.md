@@ -27,21 +27,25 @@
    参数2：是一个对象或者null表示当前这个DOM的属性
    参数3：表示子节点#
    参数n:表示其他子节点,和参数三是平行的子节点
+   
    ```
    const my = React.createElement('h1',null,'这是h1','此处可以放react创建的其他虚拟dom，相当于是嵌套')
    const my = <h1>这是h1 此处可以放react创建的其他虚拟dom，相当于是嵌套</h1>
    ```
    `my`:接收了这个dom，但是只在内存中，需要渲染到页面上
    在js文件中不能使用html标记语言，如果想要使用的话就需要用`babel`进行转换为上面的js写法
+   
    >`注意：`在js中混合使用html的语法叫做`jsx`,是符合`xml`规范的js,所以jsx本质就是使用React.createElement转换为dom 然后显示
 4. **渲染dom到页面**
    参数1：要渲染到哪个虚拟dom元素上面
    参数2：指定页面上的容器，好存放dom
+   
    ```
    reactDOM.render(my,document.getElementById('app'));
    ```
    `document.getElementById('app')`:不能使用'#app',因为webpack打包后把代码嵌入到html中，此时你想使用html的元素就应该这样使用，才能获取到
 5. **如何使用jsx**
+   
    ```
    npm i babel-core babel-loader babel-plugin-transform-runtime babel-preset-env babel-preset-stage-0 babel-preset-react -D
    ```
@@ -55,11 +59,12 @@
    在webpack中设loader
    `webpack默认只能处理.js的文件，所以其他的文件，都需要配置第三方插件`
 6. **jsx语法**
-    >把js代码放在{}中，当你要在jsx里面写一些js表达式的时候就需要使用{}包裹起来
-
+    
+>把js代码放在{}中，当你要在jsx里面写一些js表达式的时候就需要使用{}包裹起来
+    
     >在jsx中循环数组到dom中：
-     在react中key需要放在forEach或map直接控制的元素上面
-
+ 在react中key需要放在forEach或map直接控制的元素上面
+    
     >`方案一：在html外循环`
      ```
      const arr=[1,2,3,4];
@@ -67,8 +72,8 @@
      arr.forEach(item=>{
          let item=<span key={item}>{item}</span>;
          arr1.push(item);
-     })
-
+ })
+    
      const my=<div><ul>{arr1}</ul></div>
      ```
     >`方案二：在html内循环`
@@ -85,27 +90,32 @@
     ```
     >`注意：forEach和map功能一样，唯一的区别就是map是直接操作每项后返回新的数组，forEach没有返回的功能，需要手动push到一个数组中`
 7. **jsx注释**
-    >注释必须用{}来注释：
+    >注释必须用{}来注释：0
     *多行注释：{/**/}
     *单行注释：{//}
 8. **在jsx中添加class名**
+    
     >需要用className来代替class，其中htmlFor替换label的for属性
 9. **jsx的注意事项**
 10. **创建组件的方式**   
+    
     >`方案一：组件首字母必须大写`
-      ```
-    function Hello(){
-      return <div>这是hello组件</div>
+      
+    ```
+      function Hello(){
+    return <div>这是hello组件</div>
     }
     ReactDOM.render(<div>
     <Hello></Hello>
-    </div>,document.getelementById("app"))
+      </div>,document.getelementById("app"))
+      ```
     ```
     > `方案二：从外部引入子组件`
-     ```
+    ```
      * 默认情况下，不做其他配置，引入的文件后缀是不能省略的，会报错，如果想省略，在webpack中添加  resolve:{extensions:['.js','.jsx','.json']}
      import Hello form '../Hello.jsx'
      ```
+    
      ```
      * 子组件中必须导入react，因为这个文件使用的react来创建组件的
      import React from "react"
@@ -123,29 +133,30 @@
          this.state={};//相当于vue中的data(){return{}},所以我们可以在这里面定义属性，使用就直接this.static.名字
        }
        * 必须要有一个render函数，并且要返回一个合法的jsx虚拟dom结构
-       render(){
+          render(){
          * render必须有返回值
          return null;
-       }
+          }
      }
      ```
     > `function和class的区别`
      *用class创建的组件有自己的私有数据和生命周期和props，使用function就只有props，没有私有数据和生命周期
-     *
+ *
     >`无状态组件`
     没有state状态，数据都是从仓库来的，react-redux的props来的，所以直接传值返回即可
     `能使用无状态组件就使用，因为它比class的组件性能好些`
-
-    ```javascript
+    
+    ​```javascript
     const Header=(props)=>{
        return <HeaderWrapper>
                     <NavSearch className={props.focuse ? "focused" : ""} onFocus={() => props.handleFocuse()} onBlur={() => props.handleBlur()}>
                     </NavSearch>
       </HeaderWrapper>
     }
-    ```
+     ```
 11. **组件传值**   
     无论是vue还是react，props的值都是只读的不能被重新赋值
+    
     >`方案一：格式（子组件接收的名字={父组件传的值}）,然后子组件用形参接收即可，如props`
     `name={MyName.name} age={MyName.age}和{...MyName}效果一样`
     ```
@@ -374,7 +385,7 @@
     textChange=()=>{
       this.setState({msg:this.ref.text.value});
     }
-    ```
+       ```
 22. **生命周期**
      生命周期：每个组件从创建到运行到销毁，这一个过程，在这个过程中触发的函数就是生命周期函
      组件创建阶段(1)、运行阶段(>1)、销毁阶段(1)
@@ -394,7 +405,7 @@
           </Provider>
         );
       }
-    ``` 
+    ```
     ```javascript
     <!-- header.js -->
       import {connect} from "react-redux"
@@ -529,7 +540,7 @@
           }
       }
       export default connect(MapStateToProps,MapDispatchToProps)(Header)/* 如果只是获取数据,而不用改变state数据的话,可以写null,也可以省略第二个参数 */
-    ```
+     ```
 
     >`redux-immutable`统一数据格式
 
@@ -718,7 +729,7 @@
     git add .
     git commit -m "12"
     npm run eject
-    ``` 
+    ```
 3. 16.8react使用less限制作用域
    ```JavaScript
     <!-- 安装 -->
@@ -768,4 +779,5 @@
    使用`export`向外暴露的成员，只能使用`{ 名字与导出一致 }`的形式来接收，这种形式，叫做【按需导出】
    `export default`可以其他名字来接收
 6. 字符串里面的标签转化为html
+    
     <div dangerouslySetInnerHTML={{__html:this.props.content}}></div>
